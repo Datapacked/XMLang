@@ -1,13 +1,13 @@
 <xmlang>
-    <module name="main">
+    <module name="bb">
         <import module_name="2" />
-        <func.main>
+        <func name="main">
             test
-        </func.main>
+        </func>
     </module>
     <module name="2">
-        <func.main>
+        <func name="thing">
             beans
-        </func.main>
+        </func>
     </module>
 </xmlang>

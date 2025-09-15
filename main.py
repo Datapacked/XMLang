@@ -1,7 +1,13 @@
 import xml.etree.ElementTree as ET
+import sys
+
+try:
+	file = sys.argv[1]
+except:
+	file = "example.xml"
 
 # Parse the XML file
-tree = ET.parse('main.xml')
+tree = ET.parse(file)
 
 # Get the root element of the XML tree
 root = tree.getroot()
