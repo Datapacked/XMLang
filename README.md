@@ -12,4 +12,10 @@ Functions are declared using `<func name="NAME_HERE">`
 
 Modules are declared using `<module name="NAME_HERE">`, you can import modules using `<import module_name="MODULE_NAME_HERE">`
 
-To declare a variable, one must use `<declare type="TYPE_HERE" name="NAME_HERE">`, current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts
+To declare a variable, one must use `<declare type="TYPE_HERE" name="NAME_HERE">`, current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts along with `float` and `double`.
+
+To use a variable, it is simple, just use `<variable name="NAME_HERE">`
+
+Operators are done via `<operator op="OPERATOR_HERE">`, supported operators are `/`, `+`, `-` and `*`
+
+Casting is done via `<cast type="TYPE_HERE">`, supported types are the aforementioned supported types.
