@@ -17,5 +17,40 @@ To declare a variable, one must use `<declare type="TYPE_HERE" name="NAME_HERE">
 To use a variable, it is simple, just use `<variable name="NAME_HERE">`
 
 Operators are done via `<operator op="OPERATOR_HERE">`, supported operators are `/`, `+`, `-` and `*`
+Example usage is
+```xml
+<operator op="*">
+    <variable name="x" />
+    <variable name="y" />
+</operator>
+```
+The above XMLang translates to (x * y)
+```xml
+<operator op="*">
+    <variable name="x" />
+    <variable name="y" />
+    <variable name="z" />
+</operator>
+```
+The above XMLang translates to (x * y * z)
 
-Casting is done via `<cast type="TYPE_HERE">`, supported types are the aforementioned supported types.
+Casting is done via `<cast type="TYPE_HERE">`, supported types are the aforementioned supported types
+```xml
+<cast type="uint8">
+    <variable name="x" />
+</cast>
+```
+The above XMLang translates to ((uint8) (x))
+
+In order to cast the result of an operator:
+```xml
+<cast type="uint16">
+    <operator op="*">
+        <variable name="x" />
+        <variable name="y" />
+        <variable name="z" />
+    </operator>
+</cast>
+```
+which translates to ((uint16) ((x * y * z)))
+
