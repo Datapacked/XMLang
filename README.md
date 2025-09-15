@@ -8,9 +8,19 @@ XML entites are supported
 
 current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts along with `float` and `double` and `string`
 
-The first module defined in the XMLang file will be treated as the entrypoint, therefore you MUST define a main function within the first module of the file
+The first "module" in the file is not really a module, it has the tag name `<main>` as an entrypoint must be declared for the code to actually run
 
 Names are limited to whatever is valid in C and C++, therefore you must avoid C++ and C keywords.
+
+### Structures
+
+To define an object, just use `<struct name="NAME_HERE">`. To define attributes, just use `<variable>`
+example:
+```xml
+<struct name="struc">
+    <variable type="uint8" name="H" />
+</struct>
+```
 
 ### Functions
 
@@ -102,7 +112,7 @@ example:
 
 ##### Array declaration
 
-To declare an array, use `<adecl size="SIZE_HERE" type="TYPE_HERE" name="NAME_HERE" />`. `size` is length of array, `type` is one of the supported types and `name` is a variable name. Arrays may contain empty/null elements so make you know what you're doing.
+To declare an array, use `<adecl size="SIZE_HERE" type="TYPE_HERE" name="NAME_HERE" />`. `size` is length of array, `type` is one of the supported types and `name` is a variable name. Arrays may contain empty/null elements so make you know what you're doing. `size` can be a variable.
 
 ##### Array referencing
 
@@ -118,7 +128,7 @@ example:
 </aasign>
 ```
 
-Arrays have no real memory safety, you can index and write out of bounds so be careful!
+Arrays have no real memory safety, you can index and write out of bounds so be careful! To free an array, use `<free name="NAME_HERE">`
 
 #### Variable referencing
 
