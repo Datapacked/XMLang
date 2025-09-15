@@ -1,11 +1,11 @@
 <xmlang>
     <module name="bb">
-        <import module_name="2" />
+        <import module_name="gg" />
         <func name="main">
             <declare type="uint8" name="T"/>
         </func>
     </module>
-    <module name="2">
+    <module name="gg">
         <func name="thing">
             beans
         </func>

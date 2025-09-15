@@ -4,6 +4,8 @@ XMLang is a programming language using XML
 
 ## Documentation
 
+XML entites are supported
+
 current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts along with `float` and `double` and `string`
 
 The first module defined in the XMLang file will be treated as the entrypoint, therefore you MUST define a main function within the first module of the file
@@ -115,6 +117,8 @@ example:
     <value type="uint8">5</value>
 </aasign>
 ```
+
+Arrays have no real memory safety, you can index and write out of bounds so be careful!
 
 #### Variable referencing
 
