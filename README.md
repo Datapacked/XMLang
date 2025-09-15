@@ -14,12 +14,13 @@ Names are limited to whatever is valid in C and C++, therefore you must avoid C+
 
 #### Function writing
 
-Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function
+Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function. For arguments that are arrays, use `<aarg>` instead of `<arg>`
 example:
 ```xml
 <func type="uint32" name="main">
     <args>
         <arg type="uint8" name="B" />
+        <aarg type="uint8" name="C" />
     </args>
 </func>
 ```
@@ -99,7 +100,21 @@ example:
 
 ##### Array declaration
 
-To declare an array, use `<adecl type="TYPE_HERE" name="NAME_HERE" />
+To declare an array, use `<adecl size="SIZE_HERE" type="TYPE_HERE" name="NAME_HERE" />`. `size` is length of array, `type` is one of the supported types and `name` is a variable name. Arrays may contain empty/null elements so make you know what you're doing.
+
+##### Array referencing
+
+To reference an array, use `<aref name="NAME_HERE" index="INDEX_HERE">`. Zero-based indexing, variable indexes are supported.
+
+##### Array assignment
+
+To assign to an array, use `<aasign name="NAME_HERE" index="INDEX_HERE">`.
+example:
+```xml
+<aasign name="arr" index="4">
+    <value type="uint8">5</value>
+</aasign>
+```
 
 #### Variable referencing
 
@@ -124,6 +139,21 @@ The above XMLang translates to (x * y)
 </operator>
 ```
 The above XMLang translates to (x * y * z)
+
+#### Accessing attributes
+
+In order to access the attribute of a variable or array index, use `<prop prop="PROPERTY_HERE">`. Below is an example to access attribute `b` of `a` (aka `a.b`).
+```xml
+<prop prop="b">
+    <variable name="a" />
+</prop>
+```
+For arrays, it's the same but instead you use `<aref>`
+```xml
+<prop prop="b">
+    <aref name="swaws" index="4"/>
+</prop>
+```
 
 ##### Increment/Decrement
 
