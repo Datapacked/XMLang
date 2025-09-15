@@ -2,7 +2,7 @@
     <module name="bb">
         <import module_name="2" />
         <func name="main">
-            test
+            <declare type="uint8" name="T"/>
         </func>
     </module>
     <module name="2">
