@@ -6,6 +6,7 @@
                 <arg type="uint8_t" name="x"/>
                 <arg type="uint8_t" name="y"/>
             </args>
+            <creturn type="uint8_t">56</creturn>
         </func>
         <func type="int32_t" name="main">
             <args>
@@ -65,6 +66,9 @@
                     <variable name="F" />
                 </call>
             </assign>
+            <print>
+                <variable name="F" />
+            </print>
         </func>
     </main>
     <module name="gg">

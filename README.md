@@ -18,7 +18,7 @@ Names are limited to whatever is valid in C and C++, therefore you must avoid C+
 
 ### Structures `-`
 
-#### Structures are NOT implemented yet as of XMLang `0.1.0`
+#### Structures are NOT implemented yet as of XMLang `0.0.1`
 
 To define an object, just use `<struct name="NAME_HERE">`. To define attributes, just use `<variable>`
 example:
@@ -28,14 +28,14 @@ example:
 </struct>
 ```
 
-### Functions `?`
+### Functions `+`
 
 #### Function writing `+`
 
 Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function. For arguments that are arrays, append `*` to the type
 example:
 ```xml
-<func type="uint32_t" name="main">
+<func type="int32_t" type="uint32_t" name="main">
     <args>
         <arg type="uint8_t" name="B" />
         <arg type="uint8_t*" name="C" />
@@ -54,7 +54,7 @@ this is a feature, not a bug.
 In order to return from a function, use `<return name="NAME_HERE">` to return a variable's value. You cannot return a value directly.
 example:
 ```xml
-<func name="main">
+<func type="int32_t" name="main">
     <args>
     </args>
     <declare type="uint8_t" name="x" />
@@ -62,6 +62,19 @@ example:
         <value type="uint8_t">5</value>
     </assign>
     <return name="x" />
+</func>
+```
+In order to return a primitive type (except for strings), use `<creturn type="TYPE_HERE">`
+example:
+```xml
+<func type="int32_t" name="main">
+    <args>
+    </args>
+    <declare type="uint8_t" name="x" />
+    <assign name="x">
+        <value type="uint8_t">5</value>
+    </assign>
+    <creturn type="uint8_t">56</creturn>
 </func>
 ```
 
@@ -76,7 +89,7 @@ example:
 </call>
 ```
 
-### Modules `-`
+### Modules `+`
 
 Modules are declared using `<module name="NAME_HERE">`, you can import modules using `<import module_name="MODULE_NAME_HERE">`
 example:
@@ -167,7 +180,7 @@ The above XMLang translates to (5 * y)
 ```
 The above XMLang translates to (x * y * z)
 
-#### Increment/Decrement `-`
+#### Increment/Decrement `+`
     
 Increment and decrement are simple, `<increment name="NAME_HERE">` and `<decrement name="NAME_HERE">`
 
@@ -247,7 +260,7 @@ example:
 
 #### IO
 
-##### Printing `-`
+##### Printing `+`
 
 To print to console, use `<print>`
 example:

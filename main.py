@@ -25,12 +25,20 @@ def handle_func(func, file):
 	for arg in func[0]:
 		argstr = argstr + f"{arg_to_str(arg)}, "
 	file.write(argstr[:-2])
-	file.write(")\n")
+	file.write(") ")
 	file.write("{\n")
 	for tag in func[1::]:
 		handle_tag(tag, file)
 	file.write("}\n")
 	return
+
+# Handles return
+
+def handle_return(ret, file):
+	file.write(f"return {ret.attrib['name']};\n")
+
+def handle_creturn(cret, file):
+	file.write(f"return {cret.text};\n")
 
 # Handles assignment
 
@@ -119,6 +127,18 @@ def handle_call(call, file):
 	file.write(F.content)
 	file.write(")")
 
+# Handles print
+
+def handle_print(printer, file):
+	file.write(f"std::cout << ")
+	F = MockFile()
+	for tag in printer:
+		handle_tag(tag, F)
+		F.write(" << ")
+	F.content = F.content[:-4]
+	file.write(F.content)
+	file.write(';\n')
+
 def handle_tag(tag, file):
 	match(tag.tag):
 		case 'func':
@@ -149,6 +169,18 @@ def handle_tag(tag, file):
 			handle_cast(tag, file)
 		case 'call':
 			handle_call(tag, file)
+		case 'print':
+			handle_print(tag, file)
+		case 'return':
+			handle_return(tag, file)
+		case 'creturn':
+			handle_creturn(tag, file)
+
+# Handles module
+
+def handle_module(module, file):
+	for tag in module:
+		handle_tag(tag, file)
 
 BUILD_DIR = "./build/"
 
@@ -176,3 +208,11 @@ for child in root:
 			if ch.tag == 'func':
 				handle_func(ch, f)
 		f.close()
+	if child.tag == 'module':
+		f = open(f'build/{child.attrib['name']}.cpp', 'w')
+		f.write("#include <iostream>\n")
+		f.write("#include <cstdint>\n")
+		f.write('\n')
+		f.write(f"namespace {child.attrib['name']} " + "{\n")
+		handle_module(child, f)
+		f.write("}")
