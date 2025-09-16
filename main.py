@@ -18,11 +18,21 @@ def handle_func(func, file):
 		raise Exception("<args> must be the first tag inside <func>")
 	for arg in func[0]:
 		argstr = argstr + f"{arg_to_str(arg)}, "
-	argstr = argstr[:-2]
-	print(argstr)
+	file.write(argstr[:-2])
+	file.write(")\n")
+	file.write("{\n")
+	for tag in func[1::]:
+		handle_tag(tag, file)
+	file.write("}")
 	return
 
+# tag handler
 
+def handle_tag(tag, file):
+	if tag.tag == 'func':
+		handle_func(tag, file)
+	if tag.tag == 'declare':
+		file.write(f"{tag.attrib['type']} {tag.attrib['name']};\n")
 
 BUILD_DIR = "./build/"
 

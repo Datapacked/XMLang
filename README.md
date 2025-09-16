@@ -202,3 +202,18 @@ In order to cast the result of an operator:
 ```
 which translates to ((uint16_t) ((x * y * z)))
 
+
+### Extas
+
+#### IO
+
+##### Printing
+
+To print to console, use `<print>`
+example:
+```xml
+<print>
+    <variable name="x" />
+</print>
+```
+If you want a newline, just add the `newline` attribute (`<print newline="1">`)

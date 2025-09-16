@@ -1,7 +1,7 @@
 <xmlang>
     <main>
         <import module_name="gg" />
-        <func type="uint16_t" name="main">
+        <func type="uint32_t" name="main">
             <args>
                 <arg type="uint64_t" name="B" />
                 <aarg type="uint8_t" name="C" />
