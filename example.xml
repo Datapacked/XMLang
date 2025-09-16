@@ -1,13 +1,18 @@
 <xmlang>
     <main>
         <import module_name="gg" />
-        <func name="main">
-            <declare type="uint8" name="T"/>
+        <func type="uint16_t" name="main">
+            <args>
+                <arg type="uint64_t" name="B" />
+                <aarg type="uint8_t" name="C" />
+            </args>
+            <declare type="uint8_t" name="T"/>
         </func>
     </main>
     <module name="gg">
-        <func name="thing">
-            beans
+        <func type="uint8_t" name="thing">
+            <args>
+            </args>
         </func>
     </module>
 </xmlang>

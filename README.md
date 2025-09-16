@@ -6,7 +6,7 @@ XMLang is a programming language using XML
 
 XML entites are supported
 
-current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts along with `float` and `double` and `string`
+current supported types are `uint8_t`, `uint16_t`, `uint32_t`, `uint64_t` and their respective signed integer name counterparts along with `float` and `double` and `char`
 
 The first "module" in the file is not really a module, it has the tag name `<main>` as an entrypoint must be declared for the code to actually run
 
@@ -18,7 +18,7 @@ To define an object, just use `<struct name="NAME_HERE">`. To define attributes,
 example:
 ```xml
 <struct name="struc">
-    <variable type="uint8" name="H" />
+    <variable type="uint8_t" name="H" />
 </struct>
 ```
 
@@ -29,10 +29,10 @@ example:
 Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function. For arguments that are arrays, use `<aarg>` instead of `<arg>`
 example:
 ```xml
-<func type="uint32" name="main">
+<func type="uint32_t" name="main">
     <args>
-        <arg type="uint8" name="B" />
-        <aarg type="uint8" name="C" />
+        <arg type="uint8_t" name="B" />
+        <aarg type="uint8_t" name="C" />
     </args>
 </func>
 ```
@@ -51,9 +51,9 @@ example:
 <func name="main">
     <args>
     </args>
-    <declare type="uint8" name="x" />
+    <declare type="uint8_t" name="x" />
     <assign name="x">
-        <value type="uint8">5</value>
+        <value type="uint8_t">5</value>
     </assign>
     <return name="x" />
 </func>
@@ -76,9 +76,9 @@ Modules are declared using `<module name="NAME_HERE">`, you can import modules u
 example:
 ```xml
 <module name="silly">
-    <func type="uint32" name="main">
+    <func type="uint32_t" name="main">
         <args>
-            <arg type="uint8" name="B" />
+            <arg type="uint8_t" name="B" />
         </args>
     </func>
 </module>
@@ -90,12 +90,12 @@ example:
 
 ##### Primitive declaration
 
-To declare a primitive `uint8` constant like the number `5`, just use `<value type="uint8">5</value>`. Strings also work here, just use the `string` type
+To declare a primitive `uint8_t` constant like the number `5`, just use `<value type="uint8">5</value>`.
 
-To declare a variable, one must use `<declare type="TYPE_HERE" name="NAME_HERE">`, current supported types are `uint8`, `uint16`, `uint32`, `uint64` and their respective signed integer name counterparts along with `float` and `double` and `string`.
+To declare a variable, one must use `<declare type="TYPE_HERE" name="NAME_HERE">`.
 example:
 ```xml
-<declare type="uint8" name="x" />
+<declare type="uint8_t" name="x" />
 ```
 
 ##### Assignment
@@ -104,7 +104,7 @@ To assign a value to a variable, just use `<assign name="NAME_HERE">`
 example:
 ```xml
 <assign name="x">
-    <value type="uint8">5</value>
+    <value type="uint8_t">5</value>
 </assign>
 ```
 
@@ -120,12 +120,19 @@ To reference an array, use `<aref name="NAME_HERE" index="INDEX_HERE">`. Zero-ba
 
 ##### Array assignment
 
-To assign to an array, use `<aasign name="NAME_HERE" index="INDEX_HERE">`.
+To assign to an array, use `<aassign name="NAME_HERE" index="INDEX_HERE">`.
 example:
 ```xml
-<aasign name="arr" index="4">
-    <value type="uint8">5</value>
-</aasign>
+<aassign name="arr" index="4">
+    <value type="uint8_t">5</value>
+</aassign>
+```
+In order to assign a string (array of `char`) to an array, use `<assign>`. Use type `string` for `<value>` for such use cases.
+example:
+```xml
+<assign name="charr">
+    <value type="string">beans</value>
+</assign>
 ```
 
 Arrays have no real memory safety, you can index and write out of bounds so be careful! To free an array, use `<free name="NAME_HERE">`
@@ -177,15 +184,15 @@ Increment and decrement are simple, `<increment name="NAME_HERE">` and `<decreme
 
 Casting is done via `<cast type="TYPE_HERE">`, supported types are the aforementioned supported types
 ```xml
-<cast type="uint8">
+<cast type="uint8_t">
     <variable name="x" />
 </cast>
 ```
-The above XMLang translates to ((uint8) (x))
+The above XMLang translates to ((uint8_t) (x))
 
 In order to cast the result of an operator:
 ```xml
-<cast type="uint16">
+<cast type="uint16_t">
     <operator op="*">
         <variable name="x" />
         <variable name="y" />
@@ -193,5 +200,5 @@ In order to cast the result of an operator:
     </operator>
 </cast>
 ```
-which translates to ((uint16) ((x * y * z)))
+which translates to ((uint16_t) ((x * y * z)))
 
