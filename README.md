@@ -2,17 +2,23 @@
 
 XMLang is a programming language using XML
 
+Implemented features have a `+`, non-implemented features have a `-` and partially implemented features have a `?`
+
 ## Documentation
 
 XML entites are supported
 
 current supported types are `uint8_t`, `uint16_t`, `uint32_t`, `uint64_t` and their respective signed integer name counterparts along with `float` and `double` and `char`
 
+the `int8_t`/`uint8_t` types will print out the character whose codepoint is the value stored in the variable. Make sure to cast to at least `uint16_t` or `float` in order to print the value instead of the character whose codepoint is that value.
+
 The first "module" in the file is not really a module, it has the tag name `<main>` as an entrypoint must be declared for the code to actually run
 
 Names are limited to whatever is valid in C and C++, therefore you must avoid C++ and C keywords.
 
-### Structures
+### Structures `-`
+
+#### Structures are NOT implemented yet as of XMLang `0.1.0`
 
 To define an object, just use `<struct name="NAME_HERE">`. To define attributes, just use `<variable>`
 example:
@@ -22,17 +28,17 @@ example:
 </struct>
 ```
 
-### Functions
+### Functions `?`
 
-#### Function writing
+#### Function writing `+`
 
-Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function. For arguments that are arrays, use `<aarg>` instead of `<arg>`
+Functions are declared using `<func type="TYPE_HERE" name="NAME_HERE">`, if you declare a function, you MUST include `<args>` and it always must come first within the function. For arguments that are arrays, append `*` to the type
 example:
 ```xml
 <func type="uint32_t" name="main">
     <args>
         <arg type="uint8_t" name="B" />
-        <aarg type="uint8_t" name="C" />
+        <arg type="uint8_t*" name="C" />
     </args>
 </func>
 ```
@@ -59,7 +65,7 @@ example:
 </func>
 ```
 
-#### Function calling
+#### Function calling `+`
 
 to call a function, just use `<call name="NAME_HERE">` to call a function, in order to call a function you imported, use the `"MODULE_NAME::FUNC_NAME"` format (importing `x` from module `b` means you have to use `b::x` for the name for `name="NAME_HERE"`), each variable inside the `<call>` is an argument for the function. For no arguments, leave it blank.
 example:
@@ -70,7 +76,7 @@ example:
 </call>
 ```
 
-### Modules
+### Modules `-`
 
 Modules are declared using `<module name="NAME_HERE">`, you can import modules using `<import module_name="MODULE_NAME_HERE">`
 example:
@@ -84,7 +90,7 @@ example:
 </module>
 ```
 
-### Variables
+### Variables `+`
 
 #### Non-array
 
@@ -108,7 +114,7 @@ example:
 </assign>
 ```
 
-#### Arrays
+#### Arrays `+`
 
 ##### Array declaration
 
@@ -116,16 +122,16 @@ To declare an array, use `<adecl size="SIZE_HERE" type="TYPE_HERE" name="NAME_HE
 
 ##### Array referencing
 
-To reference an array, use `<aref name="NAME_HERE" index="INDEX_HERE">`. Zero-based indexing, variable indexes are supported.
+To reference an array, use `<variable name="NAME_HERE[INDEX_HERE]">`. Zero-based indexing, variable indexes are supported.
 
 ##### Array assignment
 
-To assign to an array, use `<aassign name="NAME_HERE" index="INDEX_HERE">`.
+To assign to an array, use `<assign name="NAME_HERE[INDEX_HERE]">`. `INDEX_HERE` can be any constant value or a variable
 example:
 ```xml
-<aassign name="arr" index="4">
+<assign name="arr[4]">
     <value type="uint8_t">5</value>
-</aassign>
+</assign>
 ```
 In order to assign a string (array of `char`) to an array, use `<assign>`. Use type `string` for `<value>` for such use cases.
 example:
@@ -141,17 +147,17 @@ Arrays have no real memory safety, you can index and write out of bounds so be c
 
 To use a variable, it is simple, just use `<variable name="NAME_HERE">`
 
-#### Operators
+### Operators `+`
 
-Operators are done via `<operator op="OPERATOR_HERE">`, supported operators are `/`, `+`, `-` and `*`
+Operators are done via `<operator op="OPERATOR_HERE">`, supported operators are `/`, `+`, `-`, `*`, `<`, `>`. The angle brackets must be escaped using XML entities because XML.
 Example usage is
 ```xml
 <operator op="*">
-    <variable name="x" />
+    <value type="uint8_t">5</value>
     <variable name="y" />
 </operator>
 ```
-The above XMLang translates to (x * y)
+The above XMLang translates to (5 * y)
 ```xml
 <operator op="*">
     <variable name="x" />
@@ -161,7 +167,12 @@ The above XMLang translates to (x * y)
 ```
 The above XMLang translates to (x * y * z)
 
-#### Accessing attributes
+#### Increment/Decrement `-`
+    
+Increment and decrement are simple, `<increment name="NAME_HERE">` and `<decrement name="NAME_HERE">`
+
+
+### Accessing attributes `+`
 
 In order to access the attribute of a variable or array index, use `<prop prop="PROPERTY_HERE">`. Below is an example to access attribute `b` of `a` (aka `a.b`).
 ```xml
@@ -169,18 +180,15 @@ In order to access the attribute of a variable or array index, use `<prop prop="
     <variable name="a" />
 </prop>
 ```
-For arrays, it's the same but instead you use `<aref>`
+For arrays, it's the same but instead you use indexing syntax.
 ```xml
 <prop prop="b">
-    <aref name="swaws" index="4"/>
+    <variable name="swaws[4]"/>
 </prop>
 ```
 
-##### Increment/Decrement
 
-Increment and decrement are simple, `<increment name="NAME_HERE">` and `<decrement name="NAME_HERE">`
-
-##### type-casting
+##### type-casting `+`
 
 Casting is done via `<cast type="TYPE_HERE">`, supported types are the aforementioned supported types
 ```xml
@@ -203,11 +211,43 @@ In order to cast the result of an operator:
 which translates to ((uint16_t) ((x * y * z)))
 
 
-### Extas
+### Extras
+
+#### Loops `+`
+
+For loops are cringe, while loops are easier to program for this language. Therefore, only while loops are implemented
+use the `<while>` tag for a while loop, the first tag inside the `<while>` tag MUST be a `<condition>` tag.
+example:
+```xml
+<while>
+    <condition>
+        <operator op="<">
+            <variable name="x" />
+            <value type="uint8_t">67</value>
+        </operator>
+    </condition>
+</while>
+```
+This translates to `while (x < 67)`
+
+#### Conditional `+`
+
+If statements, you use `<if>`, first tag inside the `<if>` MUST be a `<condition>` tag.
+example:
+```xml
+<if>
+    <condition>
+        <operator op="<">
+            <variable name="x" />
+            <value type="uint8_t">67</value>
+        </operator>
+    </condition>
+</if>
+```
 
 #### IO
 
-##### Printing
+##### Printing `-`
 
 To print to console, use `<print>`
 example:

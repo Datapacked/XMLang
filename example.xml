@@ -1,12 +1,70 @@
 <xmlang>
     <main>
         <import module_name="gg" />
-        <func type="uint32_t" name="main">
+        <func type="uint8_t" name="add">
             <args>
-                <arg type="uint64_t" name="B" />
-                <aarg type="uint8_t" name="C" />
+                <arg type="uint8_t" name="x"/>
+                <arg type="uint8_t" name="y"/>
             </args>
+        </func>
+        <func type="int32_t" name="main">
+            <args>
+                <arg type="int32_t" name="B" />
+                <arg type="char**" name="C" />
+            </args>
+            <declare type="uint8_t" name="F"/>
             <declare type="uint8_t" name="T"/>
+            <adecl size="10" type="uint8_t" name="G"/>
+            <assign name="F">
+                <value type="uint8_t">50</value>
+            </assign>
+            <assign name="G[0]">
+                <cast type="uint8_t">
+                    <value type="uint16_t">100</value>
+                </cast>
+            </assign>
+            <increment name="G[0]" />
+            <decrement name="G[0]" />
+            <while>
+                <condition>
+                    <operator op="&lt;">
+                        <variable name="F" />
+                        <value type="uint8_t">67</value>
+                    </operator>
+                </condition>
+            </while>
+            <if>
+                <condition>
+                    <operator op="&lt;">
+                        <variable name="F" />
+                        <value type="uint8_t">67</value>
+                    </operator>
+                </condition>
+            </if>
+            <while>
+                <condition>
+                    <operator op="&lt;">
+                        <variable name="F" />
+                        <value type="uint8_t">67</value>
+                    </operator>
+                </condition>
+            </while>
+            <assign name="T">
+                <operator op="*">
+                    <value type="uint8_t">5</value>
+                    <operator op="+">
+                        <variable name="F" />
+                        <variable name="F" />
+                    </operator>
+                    <value type="float">0.5</value>
+                </operator>
+            </assign>
+            <assign name="G[4]">
+                <call name="add">
+                    <variable name="B" />
+                    <variable name="F" />
+                </call>
+            </assign>
         </func>
     </main>
     <module name="gg">
