@@ -1,2 +1,3 @@
 # ignore the contents of `./build`
 build/*.cpp
+build/*.hpp

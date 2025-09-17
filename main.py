@@ -139,8 +139,15 @@ def handle_print(printer, file):
 	file.write(F.content)
 	file.write(';\n')
 
+# Handles import
+
+def handle_import(imp, file):
+	file.write(f"#include \"{imp.attrib['module_name']}.hpp\"\n")
+
 def handle_tag(tag, file):
 	match(tag.tag):
+		case 'import':
+			handle_import(tag, file)
 		case 'func':
 			handle_func(tag, file)
 		case 'declare':
@@ -205,11 +212,10 @@ for child in root:
 		f.write("#include <cstdint>\n")
 		f.write('\n')
 		for ch in child:
-			if ch.tag == 'func':
-				handle_func(ch, f)
+			handle_tag(ch, f)
 		f.close()
 	if child.tag == 'module':
-		f = open(f'build/{child.attrib['name']}.cpp', 'w')
+		f = open(f'build/{child.attrib['name']}.hpp', 'w')
 		f.write("#include <iostream>\n")
 		f.write("#include <cstdint>\n")
 		f.write('\n')
